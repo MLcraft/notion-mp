@@ -345,6 +345,10 @@ body {
     <div id="player-content">
       <div id="album-art">
         <img src="https://files.catbox.moe/46drsf.jpg" class="active" id="_1" />
+        <img src="https://files.catbox.moe/y47s92.jpg" class="active" id="_2" />
+        <img src="https://files.catbox.moe/dhhsol.jpg" class="active" id="_3" />
+        <img src="https://files.catbox.moe/8qsdkd.jpg" class="active" id="_4" />
+        <img src="https://files.catbox.moe/2n4ogs.jpg" class="active" id="_5" />
         <div id="buffer-box">Buffering ...</div>
       </div>
       <div id="player-controls">
@@ -386,14 +390,26 @@ $(function () {
   const playPreviousTrackButton = $("#play-previous");
   const playNextTrackButton = $("#play-next");
   const albums = [
-    "广播剧《锦上添金》"
+    "广播剧《锦上添金》",
+    "广播剧《惰性法则》",
+    "广播剧《竹马难猜》",
+    "广播剧《顽石》",
+    "广播剧《好生开车》"
   ];
   const trackNames = [
-    "醉雪 - 美丽谎言"
+    "醉雪 - 美丽谎言",
+    "白翎 - 胃里的蝴蝶",
+    "迪力 - 你终于被风替代",
+    "撬锁老羊LeO - 顽",
+    "大C - 心里漂移"
   ];
-  const albumArtworks = ["_1"];
+  const albumArtworks = ["_1", "_2", "_3", "_4", "_5"];
   const trackUrl = [
-    "https://files.catbox.moe/q1184j.mp3"
+    "https://files.catbox.moe/q1184j.mp3",
+    "https://files.catbox.moe/9z90kh.mp3",
+    "https://files.catbox.moe/naf7fm.mp3",
+    "https://files.catbox.moe/7n4tks.mp3",
+    "https://files.catbox.moe/jpo2en.mp3"
   ];
 
   let bgArtworkUrl,
@@ -413,7 +429,8 @@ $(function () {
     nTime = 0,
     buffInterval = null,
     tFlag = false,
-    currIndex = -1;
+    currIndex = -1,
+    alreadyPlayed = [];
 
   function playPause() {
     setTimeout(function () {
@@ -514,11 +531,7 @@ $(function () {
     seekBar.width(playProgress + "%");
 
     if (playProgress == 100) {
-      i.attr("class", "fa fa-play");
-      seekBar.width(0);
-      tProgress.text("00:00");
-      albumArt.removeClass("buffering").removeClass("active");
-      clearInterval(buffInterval);
+      selectTrack(1)
     }
   }
 
@@ -534,8 +547,17 @@ $(function () {
   }
 
   function selectTrack(flag) {
-    if (flag == 0 || flag == 1) ++currIndex;
-    else --currIndex;
+    // if (flag == 0 || flag == 1) ++currIndex;
+    // else --currIndex;
+    if (alreadyPlayed.length == albumArtworks.length) {
+      alreadyPlayed = []
+    }
+    currRandom = Math.floor(Math.random() * albumArtworks.length)
+    while (alreadyPlayed.includes(currRandom)) {
+      currRandom = Math.floor(Math.random() * albumArtworks.length)
+    }
+    alreadyPlayed.push(currRandom)
+    currIndex = currRandom
 
     if (currIndex > -1 && currIndex < albumArtworks.length) {
       if (flag == 0) i.attr("class", "fa fa-play");
@@ -614,6 +636,7 @@ $(function () {
 </script>
 </body>
 </html>
+
 
 
 
